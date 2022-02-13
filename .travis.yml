@@ -1,0 +1,20 @@
+language: generic
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t 4mirul/docker-react-test -f Dockerfile.dev .
+
+script:
+  - docker run -e CI=true 4mirul/docker-react-test npm run test
+
+deploy:
+  provider: elasticbeanstalk
+  region: "us-west-2"
+  app: docker-react-test
+  env: "Docker-env"
+  bucket_name: ""
+  bucket_path: "docker-react-test"
+  on:
+    branch: master
